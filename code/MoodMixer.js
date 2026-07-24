@@ -7,6 +7,7 @@ import { EMOTIONS_DATA } from './gameData.js';
 import { MIXING_RECIPES } from './moodMixerData.js';
 import { speakText } from './utils/accessibility.js';
 import { saveDiscoveredMixes } from './utils/storage.js';
+import { toggleFullscreen, isFullscreen } from './utils/fullscreen.js';
 
 let selectedSlot1 = null;
 let selectedSlot2 = null;
@@ -41,6 +42,15 @@ export function template() {
                 <button id="btn-mixer-back" class="circle-btn" title="Exit to Menu">
                     <i data-lucide="log-out"></i>
                 </button>
+            <header class="mixer-header" style="position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; z-index: 100; align-items: center; gap: 20px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="btn-mixer-back" class="circle-btn" title="Exit to Menu">
+                        <i data-lucide="log-out"></i>
+                    </button>
+                    <button id="btn-fullscreen-toggle" class="circle-btn" title="Toggle Fullscreen">
+                        <i data-lucide="${isFullscreen() ? 'minimize' : 'maximize'}"></i>
+                    </button>
+                </div>
                 
                 <!-- Center: Mission & Level Display -->
                 <div class="mission-header" style="flex: 1; display: flex; flex-direction: column; align-items: center; position: relative;">
@@ -210,6 +220,11 @@ export function init({ navigate }) {
     document.getElementById('btn-mixer-back').addEventListener('click', () => {
         sounds.click();
         localNavigate('splash');
+    });
+
+    document.getElementById('btn-fullscreen-toggle').addEventListener('click', () => {
+        sounds.click();
+        toggleFullscreen();
     });
 
     document.getElementById('btn-mixer-tips').addEventListener('click', () => {

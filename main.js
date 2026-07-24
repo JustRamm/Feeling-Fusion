@@ -3,8 +3,7 @@ import * as Tutorial from './code/Tutorial.js';
 import * as MoodMixer from './code/MoodMixer.js';
 import * as Success from './code/Success.js';
 import * as Failure from './code/Failure.js';
-import * as SagaMap from './code/SagaMap.js';
-import * as Match3Engine from './code/Match3Engine.js';
+import { toggleFullscreen, isFullscreen } from './code/utils/fullscreen.js';
 
 const app = document.getElementById('app');
 
@@ -40,6 +39,7 @@ function navigate(screenId) {
         if (window.lucide) {
             window.lucide.createIcons();
         }
+
     } else {
         console.error('Screen not found:', screenId);
     }
@@ -49,6 +49,21 @@ function navigate(screenId) {
 function initApp() {
     // Start with the splash screen
     navigate('splash');
+
+    const updateFsIcon = () => {
+        const fsToggleBtn = document.getElementById('btn-fullscreen-toggle');
+        if (!fsToggleBtn) return;
+        
+        fsToggleBtn.innerHTML = isFullscreen() ? '<i data-lucide="minimize"></i>' : '<i data-lucide="maximize"></i>';
+        
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    };
+
+    document.addEventListener('fullscreenchange', updateFsIcon);
+    document.addEventListener('webkitfullscreenchange', updateFsIcon);
+    document.addEventListener('MSFullscreenChange', updateFsIcon);
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
